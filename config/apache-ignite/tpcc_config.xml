@@ -4,7 +4,7 @@
     <!-- Connection details -->
     <type>IGNITE</type>
     <driver>org.apache.ignite.IgniteJdbcThinDriver</driver>
-    <url>jdbc:ignite:thin://127.0.0.1</url>
+    <url>jdbc:ignite:thin://tem51</url>
     <username>ignite</username>
     <password>ignite</password>
     <isolation>TRANSACTION_SERIALIZABLE</isolation>
