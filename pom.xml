@@ -35,6 +35,19 @@
 
     <profiles>
         <profile>
+            <id>apache-ignite</id>
+            <properties>
+                <classifier>apache-ignite</classifier>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.ignite</groupId>
+                    <artifactId>ignite-core</artifactId>
+                    <version>2.14.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>sqlite</id>
             <properties>
                 <classifier>sqlite</classifier>
