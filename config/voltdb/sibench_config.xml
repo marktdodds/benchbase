@@ -4,10 +4,9 @@
     <!-- Connection details -->
     <type>SQLITE</type>
     <driver>org.voltdb.jdbc.Driver</driver>
-    <url>jdbc:voltdb://tem51:21212,tem52:21212?jdbc.rollbackthrowexception=false,jdbc.committhrowexception=false</url>
+    <url>jdbc:voltdb://tem51:21212,tem52:21212?jdbc.committhrowexception=false,jdbc.rollbackthrowexception=false</url>
     <username>voltdb</username>
     <password>voltdb</password>
-<!--    <isolation>TRANSACTION_SERIALIZABLE</isolation>-->
     <batchsize>128</batchsize>
     <newConnectionPerTxn>true</newConnectionPerTxn>
 
