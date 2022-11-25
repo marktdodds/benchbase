@@ -42,10 +42,8 @@
             <dependencies>
                 <dependency>
                     <groupId>org.voltdb</groupId>
-                    <artifactId>voltdb</artifactId>
-                    <version>2.14.0</version>
-                    <scope>system</scope>
-                    <systemPath>/home/mtdodds/voltdb/voltdb/voltdbclient-11.4.0.beta1.jar</systemPath>
+                    <artifactId>voltdbclient</artifactId>
+                    <version>11.4.2</version>
                 </dependency>
             </dependencies>
         </profile>
