@@ -4,7 +4,7 @@
     <!-- Connection details -->
     <type>SQLITE</type>
     <driver>org.voltdb.jdbc.Driver</driver>
-    <url>jdbc:voltdb://tem51:21212,tem52:21212</url>
+    <url>jdbc:voltdb://tem51:21212,tem52:21212?jdbc.rollbackthrowexception=false,jdbc.committhrowexception=false</url>
     <username>voltdb</username>
     <password>voltdb</password>
     <newConnectionPerTxn>true</newConnectionPerTxn>
