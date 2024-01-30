@@ -1,12 +1,14 @@
 # Try to read some values from the environment or else set some defaults.
 # The profiles to build:
-export BENCHBASE_PROFILES="${BENCHBASE_PROFILES:-cockroachdb mariadb mysql postgres spanner phoenix sqlserver sqlite}"
+export BENCHBASE_PROFILES="${BENCHBASE_PROFILES:-cockroachdb mariadb mysql oracle phoenix postgres spanner sqlite sqlserver}"
 # The profile to run:
 export BENCHBASE_PROFILE="${BENCHBASE_PROFILE:-postgres}"
 # Whether to clean the build before/after/both/never:
 export CLEAN_BUILD="${CLEAN_BUILD:-true}"   # true, pre, post, false
 # Whether to run the test target during build.
 export SKIP_TESTS="${SKIP_TESTS:-false}"
+# Whether to do format checks during build (mostly for CI).
+export DO_FORMAT_CHECKS="${DO_FORMAT_CHECKS:-false}"
 
 # Setting this allows us to easily tag and publish the image name in our CI pipelines or locally.
 CONTAINER_REGISTRY_NAME="${CONTAINER_REGISTRY_NAME:-}"
@@ -52,7 +54,10 @@ git_vers_tag=$(git tag -l --points-at HEAD | grep ^v | sort -V | tail -n1)
 
 # We could also include a short tag to follow semantic versioning, but it adds
 # cleanup complexity, so we omit it for now.
-#git_rev_short=$(git rev-parse --revs-only --short HEAD)
+git_rev_short=''
+if [ "${WITH_GIT_SHORT_REV_TAG:-false}" == 'true' ]; then
+    git_rev_short=$(git rev-parse --revs-only --short HEAD)
+fi
 
 # Local image gets a :latest tag, always, for local dev/run convenience.
 image_tag_args="-t $imagename:latest"
@@ -68,4 +73,32 @@ if [ -n "$git_vers_tag" ]; then
     if [ -n "$CONTAINER_REGISTRY_NAME" ]; then
         image_tag_args+=" -t $CONTAINER_REGISTRY_NAME/$imagename:$git_vers_tag"
     fi
+fi
+
+if [ -n "$git_rev_short" ]; then
+    image_tag_args+=" -t $imagename:$git_rev_short"
+    if [ -n "$CONTAINER_REGISTRY_NAME" ]; then
+        image_tag_args+=" -t $CONTAINER_REGISTRY_NAME/$imagename:$git_rev_short"
+    fi
+fi
+
+docker_build_args=''
+if ! docker buildx version >/dev/null 2>&1; then
+    echo 'NOTE: docker buildkit is unavailable.' >&2
+    DOCKER_BUILDKIT=0
+    docker_build_args=''
+elif [ -z "${DOCKER_BUILDKIT:-}" ]; then
+    # If not already set, default to buildkit.
+    DOCKER_BUILDKIT=1
+fi
+if [ "$DOCKER_BUILDKIT" == 1 ]; then
+    docker_build_args='--progress=plain'
+fi
+export DOCKER_BUILDKIT
+
+if [ "${NO_CACHE:-false}" == 'true' ]; then
+    docker_build_args+=' --pull --no-cache'
+else
+    upstream_image="benchbase.azurecr.io/$imagename:latest"
+    docker_build_args+=" --cache-from=$upstream_image"
 fi

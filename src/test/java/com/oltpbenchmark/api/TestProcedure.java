@@ -16,58 +16,53 @@
 
 package com.oltpbenchmark.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.oltpbenchmark.benchmarks.tatp.procedures.DeleteCallForwarding;
 import com.oltpbenchmark.types.DatabaseType;
-import junit.framework.TestCase;
-
 import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TestProcedure extends TestCase {
+public class TestProcedure {
 
-    @Override
-    protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {}
 
-    }
+  /** testGetProcedureName */
+  @Test
+  public void testGetProcedureName() throws Exception {
+    DeleteCallForwarding proc = new DeleteCallForwarding();
+    assertEquals(DeleteCallForwarding.class.getSimpleName(), proc.getProcedureName());
+  }
 
-    /**
-     * testGetProcedureName
-     */
-    public void testGetProcedureName() throws Exception {
-        DeleteCallForwarding proc = new DeleteCallForwarding();
-        assertEquals(DeleteCallForwarding.class.getSimpleName(), proc.getProcedureName());
-    }
+  /** testGetStatements */
+  @Test
+  public void testGetStatements() throws Exception {
+    Map<String, SQLStmt> stmts = Procedure.getStatements(new DeleteCallForwarding());
+    assertNotNull(stmts);
+    assertEquals(2, stmts.size());
+    //        System.err.println(stmts);
+  }
 
-    /**
-     * testGetStatements
-     */
-    public void testGetStatements() throws Exception {
-        Map<String, SQLStmt> stmts = Procedure.getStatements(new DeleteCallForwarding());
-        assertNotNull(stmts);
-        assertEquals(2, stmts.size());
-//        System.err.println(stmts);
-    }
+  /** testGetStatementsConstructor */
+  @Test
+  public void testGetStatementsConstructor() throws Exception {
+    Procedure proc = new DeleteCallForwarding();
+    proc.initialize(DatabaseType.POSTGRES);
 
-    /**
-     * testGetStatementsConstructor
-     */
-    public void testGetStatementsConstructor() throws Exception {
-        Procedure proc = new DeleteCallForwarding();
-        proc.initialize(DatabaseType.POSTGRES);
+    // Make sure that procedure handle has the same
+    // SQLStmts as what we get back from the static method
+    Map<String, SQLStmt> expected = Procedure.getStatements(proc);
+    assertNotNull(expected);
+    //        System.err.println("EXPECTED:" + expected);
 
-        // Make sure that procedure handle has the same
-        // SQLStmts as what we get back from the static method
-        Map<String, SQLStmt> expected = Procedure.getStatements(proc);
-        assertNotNull(expected);
-//        System.err.println("EXPECTED:" + expected);
+    Map<String, SQLStmt> actual = proc.getStatements();
+    assertNotNull(actual);
+    //        System.err.println("ACTUAL:" + actual);
 
-        Map<String, SQLStmt> actual = proc.getStatements();
-        assertNotNull(actual);
-//        System.err.println("ACTUAL:" + actual);
-
-        assertEquals(expected.size(), actual.size());
-        assertEquals(expected, actual);
-
-
-    }
-
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected, actual);
+  }
 }

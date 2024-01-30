@@ -14,117 +14,102 @@
  *  limitations under the License.                                            *
  ******************************************************************************/
 
-
 package com.oltpbenchmark.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.*;
+import org.junit.Test;
 
 /**
  * @author pavlo
  */
-public class TestClassUtil extends TestCase {
+public class TestClassUtil {
 
-    private final Class<?> target_class = ArrayList.class;
+  private final Class<?> target_class = ArrayList.class;
 
-    public static class MockObject1 {
-        public MockObject1(MockObject1 x) {
+  public static class MockObject1 {
+    public MockObject1(MockObject1 x) {}
+  }
 
-        }
+  public static class MockObject2 {
+    public MockObject2(MockObject2 x) {}
+  }
+
+  public static class MockObject3 extends MockObject2 {
+    public MockObject3(MockObject2 x) {
+      super(x);
     }
+  }
 
-    public static class MockObject2 {
-        public MockObject2(MockObject2 x) {
+  /** testGetConstructor */
+  @Test
+  public void testGetConstructor() throws Exception {
+    Class<?>[] targets = {
+      MockObject1.class, MockObject2.class,
+    };
+    Class<?>[] params = {MockObject1.class};
 
-        }
-    }
+    for (Class<?> targetClass : targets) {
+      Constructor<?> c = ClassUtil.getConstructor(targetClass, params);
+      assertNotNull(c);
+    } // FOR
+  }
 
-    public static class MockObject3 extends MockObject2 {
-        public MockObject3(MockObject2 x) {
-            super(x);
-        }
-    }
+  /** testGetSuperClasses */
+  @Test
+  public void testGetSuperClasses() {
+    Class<?>[] expected = {
+      target_class, AbstractList.class, AbstractCollection.class, Object.class,
+    };
+    List<Class<?>> results = ClassUtil.getSuperClasses(target_class);
+    // System.err.println(target_class + " => " + results);
+    assert (!results.isEmpty());
+    assertEquals(expected.length, results.size());
 
-    /**
-     * testGetConstructor
-     */
-    public void testGetConstructor() throws Exception {
-        Class<?>[] targets = {
-                MockObject1.class,
-                MockObject2.class,
-        };
-        Class<?>[] params = {
-                MockObject1.class
-        };
+    for (Class<?> e : expected) {
+      assert (results.contains(e));
+    } // FOR
+  }
 
-        for (Class<?> targetClass : targets) {
-            Constructor<?> c = ClassUtil.getConstructor(targetClass, params);
-            assertNotNull(c);
-        } // FOR
-    }
+  /** testGetSuperClassesCatalogType */
+  @Test
+  public void testGetSuperClassesCatalogType() {
+    Class<?>[] expected = {
+      MockObject3.class, MockObject2.class, Object.class,
+    };
+    List<Class<?>> results = ClassUtil.getSuperClasses(MockObject3.class);
+    assert (!results.isEmpty());
+    assertEquals(expected.length, results.size());
 
+    for (Class<?> e : expected) {
+      assert (results.contains(e));
+    } // FOR
+  }
 
-    /**
-     * testGetSuperClasses
-     */
-    public void testGetSuperClasses() {
-        Class<?>[] expected = {
-                target_class,
-                AbstractList.class,
-                AbstractCollection.class,
-                Object.class,
-        };
-        List<Class<?>> results = ClassUtil.getSuperClasses(target_class);
-        // System.err.println(target_class + " => " + results);
-        assert (!results.isEmpty());
-        assertEquals(expected.length, results.size());
+  /** GetInterfaces */
+  @Test
+  public void testGetInterfaces() {
+    Class<?>[] expected = {
+      Serializable.class,
+      Cloneable.class,
+      Iterable.class,
+      Collection.class,
+      List.class,
+      RandomAccess.class,
+      // New in Java 21:
+      SequencedCollection.class,
+    };
+    Collection<Class<?>> results = ClassUtil.getInterfaces(target_class);
+    // System.err.println(target_class + " => " + results);
+    assert (!results.isEmpty());
+    assertEquals(expected.length, results.size());
 
-        for (Class<?> e : expected) {
-            assert (results.contains(e));
-        } // FOR
-    }
-
-
-    /**
-     * testGetSuperClassesCatalogType
-     */
-    public void testGetSuperClassesCatalogType() {
-        Class<?>[] expected = {
-                MockObject3.class,
-                MockObject2.class,
-                Object.class,
-        };
-        List<Class<?>> results = ClassUtil.getSuperClasses(MockObject3.class);
-        assert (!results.isEmpty());
-        assertEquals(expected.length, results.size());
-
-        for (Class<?> e : expected) {
-            assert (results.contains(e));
-        } // FOR
-    }
-
-    /**
-     * GetInterfaces
-     */
-    public void testGetInterfaces() {
-        Class<?>[] expected = {
-                Serializable.class,
-                Cloneable.class,
-                Iterable.class,
-                Collection.class,
-                List.class,
-                RandomAccess.class,
-        };
-        Collection<Class<?>> results = ClassUtil.getInterfaces(target_class);
-        // System.err.println(target_class + " => " + results);
-        assert (!results.isEmpty());
-        assertEquals(expected.length, results.size());
-
-        for (Class<?> e : expected) {
-            assert (results.contains(e));
-        } // FOR
-    }
+    for (Class<?> e : expected) {
+      assert (results.contains(e));
+    } // FOR
+  }
 }

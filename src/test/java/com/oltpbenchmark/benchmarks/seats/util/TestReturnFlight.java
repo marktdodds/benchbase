@@ -14,52 +14,53 @@
  *  limitations under the License.                                            *
  ******************************************************************************/
 
-
 package com.oltpbenchmark.benchmarks.seats.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TestReturnFlight extends TestCase {
+public class TestReturnFlight {
 
-    private final int customer_base_id = 1000;
-    private final long depart_airport_id = 9999;
-    private final int[] return_days = {1, 5, 14};
+  private final int customer_base_id = 1000;
+  private final long depart_airport_id = 9999;
+  private final int[] return_days = {1, 5, 14};
 
-    private Timestamp flight_date;
-    private CustomerId customer_id;
+  private Timestamp flight_date;
+  private CustomerId customer_id;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        this.customer_id = new CustomerId(this.customer_base_id, this.depart_airport_id);
-        assertNotNull(this.customer_id);
-        this.flight_date = new Timestamp(System.currentTimeMillis());
-        assertNotNull(this.flight_date);
-    }
+  @Before
+  public void setUp() throws Exception {
+    this.customer_id = new CustomerId(this.customer_base_id, this.depart_airport_id);
+    assertNotNull(this.customer_id);
+    this.flight_date = new Timestamp(System.currentTimeMillis());
+    assertNotNull(this.flight_date);
+  }
 
-    /**
-     * testReturnFlight
-     */
-    public void testReturnFlight() {
-        for (int return_day : this.return_days) {
-            ReturnFlight return_flight = new ReturnFlight(this.customer_id, this.depart_airport_id, this.flight_date, return_day);
-            assertNotNull(return_flight);
-            assertEquals(this.customer_id, return_flight.getCustomerId());
-            assertEquals(this.depart_airport_id, return_flight.getReturnAirportId());
-            assertTrue(this.flight_date.getTime() < return_flight.getReturnDate().getTime());
-        } // FOR
-    }
+  /** testReturnFlight */
+  @Test
+  public void testReturnFlight() {
+    for (int return_day : this.return_days) {
+      ReturnFlight return_flight =
+          new ReturnFlight(this.customer_id, this.depart_airport_id, this.flight_date, return_day);
+      assertNotNull(return_flight);
+      assertEquals(this.customer_id, return_flight.getCustomerId());
+      assertEquals(this.depart_airport_id, return_flight.getReturnAirportId());
+      assertTrue(this.flight_date.getTime() < return_flight.getReturnDate().getTime());
+    } // FOR
+  }
 
-    /**
-     * testCalculateReturnDate
-     */
-    public void testCalculateReturnDate() {
-        for (int return_day : this.return_days) {
-            Timestamp return_flight_date = ReturnFlight.calculateReturnDate(this.flight_date, return_day);
-            assertNotNull(return_flight_date);
-            assertTrue(this.flight_date.getTime() < return_flight_date.getTime());
-        } // FOR
-    }
+  /** testCalculateReturnDate */
+  @Test
+  public void testCalculateReturnDate() {
+    for (int return_day : this.return_days) {
+      Timestamp return_flight_date = ReturnFlight.calculateReturnDate(this.flight_date, return_day);
+      assertNotNull(return_flight_date);
+      assertTrue(this.flight_date.getTime() < return_flight_date.getTime());
+    } // FOR
+  }
 }
