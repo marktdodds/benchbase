@@ -44,8 +44,8 @@ public class Q14 extends GenericQuery {
                lineitem, part
             WHERE
                l_partkey = p_partkey
-               AND l_shipdate >= DATE ?
-               AND l_shipdate < DATE ? + INTERVAL '1' MONTH
+               AND l_shipdate >= ?
+               AND l_shipdate < ?
             """);
 
   @Override
@@ -54,11 +54,11 @@ public class Q14 extends GenericQuery {
     // DATE is the first day of a month randomly selected from a random year within [1993 .. 1997]
     int year = rand.number(1993, 1997);
     int month = rand.number(1, 12);
-    String date = String.format("%d-%02d-01", year, month);
+    Date date = Date.valueOf(String.format("%d-%02d-01", year, month));
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setDate(1, Date.valueOf(date));
-    stmt.setDate(2, Date.valueOf(date));
+    stmt.setDate(1, date);
+    stmt.setDate(2, addMonths(date, 1));
     return stmt;
   }
 }

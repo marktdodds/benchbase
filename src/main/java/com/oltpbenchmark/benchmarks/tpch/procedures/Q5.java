@@ -21,6 +21,8 @@ import com.oltpbenchmark.api.SQLStmt;
 import com.oltpbenchmark.benchmarks.tpch.TPCHConstants;
 import com.oltpbenchmark.benchmarks.tpch.TPCHUtil;
 import com.oltpbenchmark.util.RandomGenerator;
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -49,8 +51,8 @@ public class Q5 extends GenericQuery {
                AND s_nationkey = n_nationkey
                AND n_regionkey = r_regionkey
                AND r_name = ?
-               AND o_orderdate >= DATE ?
-               AND o_orderdate < DATE ? + INTERVAL '1' YEAR
+               AND o_orderdate >= ?
+               AND o_orderdate < ?
             GROUP BY
                n_name
             ORDER BY
@@ -63,12 +65,12 @@ public class Q5 extends GenericQuery {
     String region = TPCHUtil.choice(TPCHConstants.R_NAME, rand);
 
     int year = rand.number(1993, 1997);
-    String date = String.format("%d-01-01", year);
+    Date date = Date.valueOf(String.format("%d-01-01", year));
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
     stmt.setString(1, region);
-    stmt.setDate(2, Date.valueOf(date));
-    stmt.setDate(3, Date.valueOf(date));
+    stmt.setDate(2, date);
+    stmt.setDate(3, addYears(date, 1));
     return stmt;
   }
 }

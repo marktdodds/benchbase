@@ -20,6 +20,7 @@ package com.oltpbenchmark.benchmarks.tpch.procedures;
 import com.oltpbenchmark.api.SQLStmt;
 import com.oltpbenchmark.util.RandomGenerator;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -42,7 +43,7 @@ public class Q1 extends GenericQuery {
               FROM
                  lineitem
               WHERE
-                 l_shipdate <= DATE '1998-12-01' - INTERVAL ? DAY
+                 l_shipdate <= ?
               GROUP BY
                  l_returnflag,
                  l_linestatus
@@ -54,10 +55,11 @@ public class Q1 extends GenericQuery {
   @Override
   protected PreparedStatement getStatement(
       Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException {
-    String delta = String.valueOf(rand.number(60, 120));
+    Date date = Date.valueOf("1998-12-01");
+    date = addDays(date, rand.number(60, 120) * -1);
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setString(1, delta);
+    stmt.setDate(1, date);
     return stmt;
   }
 }

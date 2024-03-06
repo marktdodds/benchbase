@@ -24,10 +24,13 @@ import com.oltpbenchmark.util.RandomGenerator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class Q8 extends GenericQuery {
 
-  public final SQLStmt query_stmt =
+  public final Function<String[], SQLStmt> query_stmt = f ->
       new SQLStmt(
           """
             SELECT
@@ -35,7 +38,7 @@ public class Q8 extends GenericQuery {
                SUM(
                CASE
                   WHEN
-                     nation = ?
+                     nation = '""" + f[0] + "'" + """
                   THEN
                      volume
                   ELSE
@@ -96,10 +99,9 @@ public class Q8 extends GenericQuery {
     String syllable3 = TPCHUtil.choice(TPCHConstants.TYPE_S3, rand);
     String type = String.format("%s %s %s", syllable1, syllable2, syllable3);
 
-    PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setString(1, nation);
-    stmt.setString(2, region);
-    stmt.setString(3, type);
+    PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt.apply(new String[]{nation}));
+    stmt.setString(1, region);
+    stmt.setString(2, type);
     return stmt;
   }
 }

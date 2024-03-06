@@ -19,6 +19,8 @@ package com.oltpbenchmark.benchmarks.tpch.procedures;
 
 import com.oltpbenchmark.api.SQLStmt;
 import com.oltpbenchmark.util.RandomGenerator;
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -35,8 +37,8 @@ public class Q4 extends GenericQuery {
             FROM
                orders
             WHERE
-               o_orderdate >= DATE ?
-               AND o_orderdate < DATE ? + INTERVAL '3' MONTH
+               o_orderdate >= ?
+               AND o_orderdate < ?
                AND EXISTS
                (
                   SELECT
@@ -58,11 +60,11 @@ public class Q4 extends GenericQuery {
       Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException {
     int year = rand.number(1993, 1997);
     int month = rand.number(1, 10);
-    String date = String.format("%d-%02d-01", year, month);
+    Date date = Date.valueOf(String.format("%d-%02d-01", year, month));
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setDate(1, Date.valueOf(date));
-    stmt.setDate(2, Date.valueOf(date));
+    stmt.setDate(1, date);
+    stmt.setDate(2, addMonths(date, 1));
     return stmt;
   }
 }

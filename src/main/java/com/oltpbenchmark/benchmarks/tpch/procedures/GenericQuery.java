@@ -18,12 +18,15 @@
 package com.oltpbenchmark.benchmarks.tpch.procedures;
 
 import com.oltpbenchmark.api.Procedure;
+import com.oltpbenchmark.util.ClassUtil;
 import com.oltpbenchmark.util.RandomGenerator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +36,18 @@ public abstract class GenericQuery extends Procedure {
 
   protected abstract PreparedStatement getStatement(
       Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException;
+
+  protected java.sql.Date addDays(java.sql.Date date, int amt) {
+    return new java.sql.Date(DateUtils.addDays(date, amt).getTime());
+  }
+
+  protected java.sql.Date addMonths(java.sql.Date date, int amt) {
+    return new java.sql.Date(DateUtils.addMonths(date, amt).getTime());
+  }
+
+  protected java.sql.Date addYears(java.sql.Date date, int amt) {
+    return new java.sql.Date(DateUtils.addYears(date, amt).getTime());
+  }
 
   public void run(Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException {
     try (PreparedStatement stmt = getStatement(conn, rand, scaleFactor)) {

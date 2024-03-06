@@ -46,8 +46,8 @@ public class Q10 extends GenericQuery {
             WHERE
                c_custkey = o_custkey
                AND l_orderkey = o_orderkey
-               AND o_orderdate >= DATE ?
-               AND o_orderdate < DATE ? + INTERVAL '3' MONTH
+               AND o_orderdate >= ?
+               AND o_orderdate < ?
                AND l_returnflag = 'R'
                AND c_nationkey = n_nationkey
             GROUP BY
@@ -69,11 +69,11 @@ public class Q10 extends GenericQuery {
     // month of 1995
     int year = rand.number(1993, 1995);
     int month = rand.number(year == 1993 ? 2 : 1, year == 1995 ? 1 : 12);
-    String date = String.format("%d-%02d-01", year, month);
+    Date date = Date.valueOf(String.format("%d-%02d-01", year, month));
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setDate(1, Date.valueOf(date));
-    stmt.setDate(2, Date.valueOf(date));
+    stmt.setDate(1, date);
+    stmt.setDate(2, addMonths(date, 3));
     return stmt;
   }
 }

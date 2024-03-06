@@ -62,8 +62,8 @@ public class Q20 extends GenericQuery {
                      WHERE
                         l_partkey = ps_partkey
                         AND l_suppkey = ps_suppkey
-                        AND l_shipdate >= DATE ?
-                        AND l_shipdate < DATE ? + INTERVAL '1' YEAR )
+                        AND l_shipdate >= ?
+                        AND l_shipdate < ? )
                )
                AND s_nationkey = n_nationkey
                AND n_name = ?
@@ -79,15 +79,15 @@ public class Q20 extends GenericQuery {
 
     // DATE is the first of January of a randomly selected year within 1993..1997
     int year = rand.number(1993, 1997);
-    String date = String.format("%d-01-01", year);
+    Date date = Date.valueOf(String.format("%d-01-01", year));
 
     // NATION is randomly selected within the list of values defined for N_NAME in Clause 4.2.3
     String nation = TPCHUtil.choice(TPCHConstants.N_NAME, rand);
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
     stmt.setString(1, color);
-    stmt.setDate(2, Date.valueOf(date));
-    stmt.setDate(3, Date.valueOf(date));
+    stmt.setDate(2, date);
+    stmt.setDate(3, addYears(date, 1));
     stmt.setString(4, nation);
     return stmt;
   }

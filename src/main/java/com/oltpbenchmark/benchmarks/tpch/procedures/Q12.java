@@ -61,8 +61,8 @@ public class Q12 extends GenericQuery {
                 AND l_shipmode IN (?, ?)
                 AND l_commitdate < l_receiptdate
                 AND l_shipdate < l_commitdate
-                AND l_receiptdate >= DATE ?
-                AND l_receiptdate < DATE ? + INTERVAL '1' YEAR
+                AND l_receiptdate >= ?
+                AND l_receiptdate < ?
             GROUP BY
                 l_shipmode
             ORDER BY
@@ -85,13 +85,13 @@ public class Q12 extends GenericQuery {
 
     // DATE is the first of January of a randomly selected year within [1993 .. 1997]
     int year = rand.number(1993, 1997);
-    String date = String.format("%d-01-01", year);
+    Date date = Date.valueOf(String.format("%d-01-01", year));
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
     stmt.setString(1, shipMode1);
     stmt.setString(2, shipMode2);
-    stmt.setDate(3, Date.valueOf(date));
-    stmt.setDate(4, Date.valueOf(date));
+    stmt.setDate(3, date);
+    stmt.setDate(4, addYears(date, 1));
     return stmt;
   }
 }

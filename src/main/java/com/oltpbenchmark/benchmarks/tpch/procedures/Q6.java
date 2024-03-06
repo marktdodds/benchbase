@@ -34,8 +34,8 @@ public class Q6 extends GenericQuery {
             FROM
                lineitem
             WHERE
-               l_shipdate >= DATE ?
-               AND l_shipdate < DATE ? + INTERVAL '1' YEAR
+               l_shipdate >= ?
+               AND l_shipdate < ?
                AND l_discount BETWEEN ? - 0.01 AND ? + 0.01
                AND l_quantity < ?
             """);
@@ -45,7 +45,7 @@ public class Q6 extends GenericQuery {
       Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException {
     // DATE is the first of January of a randomly selected year within [1993 .. 1997]
     int year = rand.number(1993, 1997);
-    String date = String.format("%d-01-01", year);
+    Date date = Date.valueOf(String.format("%d-01-01", year));
 
     // DISCOUNT is randomly selected within [0.02 .. 0.09]
     String discount = String.format("0.0%d", rand.number(2, 9));
@@ -54,8 +54,8 @@ public class Q6 extends GenericQuery {
     int quantity = rand.number(24, 25);
 
     PreparedStatement stmt = this.getPreparedStatement(conn, query_stmt);
-    stmt.setDate(1, Date.valueOf(date));
-    stmt.setDate(2, Date.valueOf(date));
+    stmt.setDate(1, date);
+    stmt.setDate(2, addYears(date, 1));
     stmt.setString(3, discount);
     stmt.setString(4, discount);
     stmt.setInt(5, quantity);
