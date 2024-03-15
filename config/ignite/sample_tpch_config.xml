@@ -24,11 +24,13 @@
         <work>
             <serial>true</serial>
             <rate>unlimited</rate>
+            <noColdQueries>true</noColdQueries>
             <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
         </work>
         <work>
             <serial>true</serial>
             <rate>unlimited</rate>
+            <noColdQueries>true</noColdQueries>
             <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
         </work>
         <work>

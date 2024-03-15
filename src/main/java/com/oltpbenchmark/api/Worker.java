@@ -310,7 +310,7 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
               latencies.addLatency(transactionType.getId(), start, end, this.id, prePhase.getId());
               intervalRequests.incrementAndGet();
             }
-            if (prePhase.isLatencyRun()) {
+            if (prePhase.isLatencyRun() && !prePhase.noColdQueries()) {
               workloadState.startColdQuery();
             }
             break;

@@ -141,7 +141,8 @@ public class ThreadBench implements Thread.UncaughtExceptionHandler {
     // measured query in sequence.
     if (phase != null && phase.isLatencyRun()) {
       synchronized (testState) {
-        testState.startColdQuery();
+        if (phase.noColdQueries()) testState.startMeasure();
+        else testState.startColdQuery();
       }
     }
 
@@ -240,7 +241,11 @@ public class ThreadBench implements Thread.UncaughtExceptionHandler {
                 // Reset serial execution parameters.
                 if (phase.isLatencyRun()) {
                   phase.resetSerial();
-                  testState.startColdQuery();
+                  if (phase.noColdQueries()) {
+                    testState.startMeasure();
+                  } else {
+                    testState.startColdQuery();
+                  }
                 }
                 LOG.info(phase.currentPhaseString());
                 if (phase.getRate() < lowestRate) {
@@ -277,7 +282,8 @@ public class ThreadBench implements Thread.UncaughtExceptionHandler {
       if (state == State.WARMUP && now >= warmup) {
         synchronized (testState) {
           if (phase != null && phase.isLatencyRun()) {
-            testState.startColdQuery();
+            if (phase.noColdQueries()) testState.startMeasure();
+            else testState.startColdQuery();
           } else {
             testState.startMeasure();
           }

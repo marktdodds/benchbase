@@ -343,6 +343,7 @@ public class DBWorkload {
         // We now have the option to run all queries exactly once in
         // a serial (rather than random) order.
         boolean serial = Boolean.parseBoolean(work.getString("serial", Boolean.FALSE.toString()));
+        boolean noColdQueries = Boolean.parseBoolean(work.getString("noColdQueries", Boolean.FALSE.toString()));
 
         int activeTerminals;
         activeTerminals = work.getInt("active_terminals[not(@bench)]", terminals);
@@ -414,7 +415,8 @@ public class DBWorkload {
             serial,
             timed,
             activeTerminals,
-            arrival);
+            arrival,
+            noColdQueries);
       }
 
       // CHECKING INPUT PHASES

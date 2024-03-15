@@ -40,30 +40,32 @@ public class Phase {
   private final boolean disabled;
   private final boolean serial;
   private final boolean timed;
+  private final boolean noColdQueries;
   private final List<Double> weights;
   private final int weightCount;
   private final int activeTerminals;
   private int nextSerial;
 
   Phase(
-      String benchmarkName,
-      int id,
-      int t,
-      int wt,
-      double r,
-      List<Double> weights,
-      boolean rateLimited,
-      boolean disabled,
-      boolean serial,
-      boolean timed,
-      int activeTerminals,
-      Arrival a) {
+    String benchmarkName,
+    int id,
+    int t,
+    int wt,
+    double r,
+    List<Double> weights,
+    boolean rateLimited,
+    boolean disabled,
+    boolean serial,
+    boolean timed,
+    int activeTerminals,
+    Arrival a, boolean noColdQueries) {
     this.benchmarkName = benchmarkName;
     this.id = id;
     this.time = t;
     this.warmupTime = wt;
     this.rate = r;
     this.weights = weights;
+    this.noColdQueries = noColdQueries;
     this.weightCount = this.weights.size();
     this.rateLimited = rateLimited;
     this.disabled = disabled;
@@ -92,6 +94,10 @@ public class Phase {
 
   public boolean isLatencyRun() {
     return !timed && serial;
+  }
+
+  public boolean noColdQueries() {
+    return noColdQueries;
   }
 
   public boolean isThroughputRun() {
