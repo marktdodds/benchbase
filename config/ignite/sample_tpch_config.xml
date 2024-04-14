@@ -4,14 +4,15 @@
     <!-- Connection details -->
     <type>IGNITE</type>
     <driver>org.apache.ignite.IgniteJdbcThinDriver</driver>
-    <url>jdbc:ignite:thin://localhost:10800</url>
+    <url>jdbc:ignite:thin://localhost:10801</url>
     <username>ignite</username>
     <password>ignite</password>
     <isolation>TRANSACTION_SERIALIZABLE</isolation>
     <batchsize>1024</batchsize>
+    <randomSeed>3111696</randomSeed>
 
     <!-- Control scale factor to generate different amount of data -->
-    <scalefactor>0.01</scalefactor>
+    <scalefactor>0.05</scalefactor>
 
     <!-- The workload -->
     <terminals>10</terminals>
@@ -19,26 +20,26 @@
         <work>
             <serial>true</serial>
             <rate>unlimited</rate>
-            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
-        </work>
-        <work>
-            <serial>true</serial>
-            <rate>unlimited</rate>
             <noColdQueries>true</noColdQueries>
             <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
         </work>
-        <work>
-            <serial>true</serial>
-            <rate>unlimited</rate>
-            <noColdQueries>true</noColdQueries>
-            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
-        </work>
-        <work>
-            <time>120</time>
-            <rate>unlimited</rate>
-            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>
-            <active_terminals>10</active_terminals>
-        </work>
+<!--        <work>-->
+<!--            <serial>true</serial>-->
+<!--            <rate>unlimited</rate>-->
+<!--            <noColdQueries>true</noColdQueries>-->
+<!--            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>-->
+<!--        </work>-->
+<!--        <work>-->
+<!--            <serial>true</serial>-->
+<!--            <rate>unlimited</rate>--><!--            <noColdQueries>true</noColdQueries>-->
+<!--            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>-->
+<!--        </work>-->
+<!--        <work>-->
+<!--            <time>120</time>-->
+<!--            <rate>unlimited</rate>-->
+<!--            <weights>1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1</weights>-->
+<!--            <active_terminals>10</active_terminals>-->
+<!--        </work>-->
     </works>
 
     <transactiontypes>
