@@ -15,6 +15,7 @@ CREATE TABLE nation
     n_regionkey INTEGER  NOT NULL,
     n_comment   VARCHAR(152)
 ) WITH "template=TPCH";
+CREATE INDEX n_rk ON nation (n_regionkey ASC);
 
 CREATE TABLE region
 (
@@ -40,12 +41,16 @@ CREATE TABLE supplier ( s_suppkey     INTEGER NOT NULL,
                         s_phone       CHAR(15) NOT NULL,
                         s_acctbal     DECIMAL(15,2) NOT NULL,
                         s_comment     VARCHAR(101) NOT NULL) WITH "template=TPCH";
+CREATE INDEX s_nk ON supplier (s_nationkey ASC);
 
 CREATE TABLE partsupp ( ps_partkey     INTEGER NOT NULL,
                         ps_suppkey     INTEGER NOT NULL,
                         ps_availqty    INTEGER NOT NULL,
                         ps_supplycost  DECIMAL(15,2)  NOT NULL,
                         ps_comment     VARCHAR(199) NOT NULL ) WITH "template=TPCH";
+CREATE INDEX ps_pk ON partsupp (ps_partkey ASC);
+CREATE INDEX ps_sk ON partsupp (ps_suppkey ASC);
+CREATE INDEX ps_sk_pk ON partsupp (ps_suppkey ASC, ps_partkey ASC);
 
 CREATE TABLE customer ( c_custkey     INTEGER NOT NULL,
                         c_name        VARCHAR(25) NOT NULL,
@@ -55,6 +60,7 @@ CREATE TABLE customer ( c_custkey     INTEGER NOT NULL,
                         c_acctbal     DECIMAL(15,2)   NOT NULL,
                         c_mktsegment  CHAR(10) NOT NULL,
                         c_comment     VARCHAR(117) NOT NULL) WITH "template=TPCH";
+CREATE INDEX c_nk ON customer (c_nationkey ASC);
 
 CREATE TABLE orders  ( o_orderkey       INTEGER NOT NULL,
                        o_custkey        INTEGER NOT NULL,
@@ -65,6 +71,8 @@ CREATE TABLE orders  ( o_orderkey       INTEGER NOT NULL,
                        o_clerk          CHAR(15) NOT NULL,
                        o_shippriority   INTEGER NOT NULL,
                        o_comment        VARCHAR(79) NOT NULL) WITH "template=TPCH";
+CREATE INDEX o_ck ON orders (o_custkey ASC);
+CREATE INDEX o_od ON orders (o_orderdate ASC);
 
 CREATE TABLE lineitem ( l_orderkey    INTEGER NOT NULL,
                         l_partkey     INTEGER NOT NULL,
@@ -82,3 +90,12 @@ CREATE TABLE lineitem ( l_orderkey    INTEGER NOT NULL,
                         l_shipinstruct CHAR(25) NOT NULL,
                         l_shipmode     CHAR(10) NOT NULL,
                         l_comment      VARCHAR(44) NOT NULL) WITH "template=TPCH";
+
+CREATE INDEX l_ok ON lineitem (l_orderkey ASC);
+CREATE INDEX l_pk ON lineitem (l_partkey ASC);
+CREATE INDEX l_sk ON lineitem (l_suppkey ASC);
+CREATE INDEX l_sd ON lineitem (l_shipdate ASC);
+CREATE INDEX l_cd ON lineitem (l_commitdate ASC);
+CREATE INDEX l_rd ON lineitem (l_receiptdate ASC);
+CREATE INDEX l_pk_sk ON lineitem (l_partkey ASC, l_suppkey ASC);
+CREATE INDEX l_sk_pk ON lineitem (l_suppkey ASC, l_partkey ASC);
