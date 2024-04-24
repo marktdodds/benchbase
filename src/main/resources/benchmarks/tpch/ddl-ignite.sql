@@ -13,7 +13,8 @@ CREATE TABLE nation
     n_nationkey INTEGER  NOT NULL,
     n_name      CHAR(25) NOT NULL,
     n_regionkey INTEGER  NOT NULL,
-    n_comment   VARCHAR(152)
+    n_comment   VARCHAR(152),
+    PRIMARY KEY (n_nationkey)
 ) WITH "template=TPCH";
 CREATE INDEX n_rk ON nation (n_regionkey ASC);
 
@@ -21,7 +22,8 @@ CREATE TABLE region
 (
     r_regionkey INTEGER  NOT NULL,
     r_name      CHAR(25) NOT NULL,
-    r_comment   VARCHAR(152)
+    r_comment   VARCHAR(152),
+    PRIMARY KEY (r_regionkey)
 ) WITH "template=TPCH";
 
 CREATE TABLE part  ( p_partkey     INTEGER NOT NULL,
@@ -32,7 +34,9 @@ CREATE TABLE part  ( p_partkey     INTEGER NOT NULL,
                      p_size        INTEGER NOT NULL,
                      p_container   CHAR(10) NOT NULL,
                      p_retailprice DECIMAL(15,2) NOT NULL,
-                     p_comment     VARCHAR(23) NOT NULL) WITH "template=TPCH";
+                     p_comment     VARCHAR(23) NOT NULL,
+                     PRIMARY KEY (p_partkey)
+) WITH "template=TPCH";
 
 CREATE TABLE supplier ( s_suppkey     INTEGER NOT NULL,
                         s_name        CHAR(25) NOT NULL,
@@ -40,14 +44,18 @@ CREATE TABLE supplier ( s_suppkey     INTEGER NOT NULL,
                         s_nationkey   INTEGER NOT NULL,
                         s_phone       CHAR(15) NOT NULL,
                         s_acctbal     DECIMAL(15,2) NOT NULL,
-                        s_comment     VARCHAR(101) NOT NULL) WITH "template=TPCH";
+                        s_comment     VARCHAR(101) NOT NULL,
+                        PRIMARY KEY (s_suppkey)
+) WITH "template=TPCH";
 CREATE INDEX s_nk ON supplier (s_nationkey ASC);
 
 CREATE TABLE partsupp ( ps_partkey     INTEGER NOT NULL,
                         ps_suppkey     INTEGER NOT NULL,
                         ps_availqty    INTEGER NOT NULL,
                         ps_supplycost  DECIMAL(15,2)  NOT NULL,
-                        ps_comment     VARCHAR(199) NOT NULL ) WITH "template=TPCH";
+                        ps_comment     VARCHAR(199) NOT NULL,
+                        PRIMARY KEY (ps_partkey, ps_suppkey)
+) WITH "template=TPCH";
 CREATE INDEX ps_pk ON partsupp (ps_partkey ASC);
 CREATE INDEX ps_sk ON partsupp (ps_suppkey ASC);
 CREATE INDEX ps_sk_pk ON partsupp (ps_suppkey ASC, ps_partkey ASC);
@@ -59,7 +67,9 @@ CREATE TABLE customer ( c_custkey     INTEGER NOT NULL,
                         c_phone       CHAR(15) NOT NULL,
                         c_acctbal     DECIMAL(15,2)   NOT NULL,
                         c_mktsegment  CHAR(10) NOT NULL,
-                        c_comment     VARCHAR(117) NOT NULL) WITH "template=TPCH";
+                        c_comment     VARCHAR(117) NOT NULL,
+                        PRIMARY KEY (c_custkey)
+) WITH "template=TPCH";
 CREATE INDEX c_nk ON customer (c_nationkey ASC);
 
 CREATE TABLE orders  ( o_orderkey       INTEGER NOT NULL,
@@ -70,7 +80,9 @@ CREATE TABLE orders  ( o_orderkey       INTEGER NOT NULL,
                        o_orderpriority  CHAR(15) NOT NULL,
                        o_clerk          CHAR(15) NOT NULL,
                        o_shippriority   INTEGER NOT NULL,
-                       o_comment        VARCHAR(79) NOT NULL) WITH "template=TPCH";
+                       o_comment        VARCHAR(79) NOT NULL,
+                       PRIMARY KEY (o_orderkey)
+) WITH "template=TPCH";
 CREATE INDEX o_ck ON orders (o_custkey ASC);
 CREATE INDEX o_od ON orders (o_orderdate ASC);
 
@@ -89,7 +101,9 @@ CREATE TABLE lineitem ( l_orderkey    INTEGER NOT NULL,
                         l_receiptdate DATE NOT NULL,
                         l_shipinstruct CHAR(25) NOT NULL,
                         l_shipmode     CHAR(10) NOT NULL,
-                        l_comment      VARCHAR(44) NOT NULL) WITH "template=TPCH";
+                        l_comment      VARCHAR(44) NOT NULL,
+                        PRIMARY KEY (l_orderkey, l_linenumber)
+) WITH "template=TPCH";
 
 CREATE INDEX l_ok ON lineitem (l_orderkey ASC);
 CREATE INDEX l_pk ON lineitem (l_partkey ASC);
