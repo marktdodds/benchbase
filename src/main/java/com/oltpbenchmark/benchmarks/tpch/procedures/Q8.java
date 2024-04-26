@@ -85,7 +85,7 @@ public class Q8 extends GenericQuery {
   protected PreparedStatement getStatement(
       Connection conn, RandomGenerator rand, double scaleFactor) throws SQLException {
     // NATION is randomly selected within the list of values defined for N_NAME in Clause 4.2.3
-    String nation = TPCHUtil.choice(TPCHConstants.N_NAME, rand);
+    String nation = TPCHConstants.N_NAME[3];
 
     // REGION is the value defined in Clause 4.2.3 for R_NAME where R_REGIONKEY corresponds to
     // N_REGIONKEY for the selected NATION in item 1 above
