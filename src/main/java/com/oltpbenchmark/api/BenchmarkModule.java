@@ -79,14 +79,20 @@ public abstract class BenchmarkModule {
   // DATABASE CONNECTION
   // --------------------------------------------------------------------------
 
-  public final Connection makeConnection() throws SQLException {
-
+  private Connection makeConnection(String url) throws SQLException {
     if (StringUtils.isEmpty(workConf.getUsername())) {
-      return DriverManager.getConnection(workConf.getUrl());
+      return DriverManager.getConnection(url);
     } else {
-      return DriverManager.getConnection(
-          workConf.getUrl(), workConf.getUsername(), workConf.getPassword());
+      return DriverManager.getConnection(url, workConf.getUsername(), workConf.getPassword());
     }
+  }
+
+  public final Connection makeLoaderConnection() throws SQLException {
+    return makeConnection(workConf.getLoaderUrl());
+  }
+
+  public final Connection makeConnection() throws SQLException {
+    return makeConnection(workConf.getUrl());
   }
 
   private String afterLoadScriptPath = null;

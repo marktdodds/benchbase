@@ -39,7 +39,11 @@ public abstract class LoaderThread implements Runnable {
   @Override
   public final void run() {
     beforeLoad();
-    try (Connection conn = benchmarkModule.makeConnection()) {
+    try (Connection conn = benchmarkModule.makeLoaderConnection()) {
+      if (benchmarkModule.workConf.getPreLoadSql() != null) {
+        LOG.info("Executing preLoadSql: " + benchmarkModule.workConf.getPreLoadSql());
+        conn.createStatement().execute(benchmarkModule.workConf.getPreLoadSql());
+      }
       load(conn);
     } catch (SQLException ex) {
       SQLException next_ex = ex.getNextException();

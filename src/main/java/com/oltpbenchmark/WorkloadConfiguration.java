@@ -31,6 +31,8 @@ public class WorkloadConfiguration {
   private DatabaseType databaseType;
   private String benchmarkName;
   private String url;
+  private String loaderUrl;
+  private String preLoadSql;
   private String username;
   private String password;
   private String driverClass;
@@ -411,5 +413,21 @@ public class WorkloadConfiguration {
         + dataDir
         + '\''
         + '}';
+  }
+
+  public String getLoaderUrl() {
+    return loaderUrl;
+  }
+
+  public void setLoaderUrl(String loaderUrl) {
+    this.loaderUrl = loaderUrl;
+  }
+
+  public String getPreLoadSql() {
+    return preLoadSql;
+  }
+
+  public void setPreLoadSql(String preLoadSql) {
+    this.preLoadSql = preLoadSql;
   }
 }

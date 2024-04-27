@@ -118,6 +118,8 @@ public class DBWorkload {
       wrkld.setDatabaseType(DatabaseType.get(xmlConfig.getString("type")));
       wrkld.setDriverClass(xmlConfig.getString("driver"));
       wrkld.setUrl(xmlConfig.getString("url"));
+      wrkld.setLoaderUrl(xmlConfig.getString("loaderUrl", wrkld.getUrl()));
+      wrkld.setPreLoadSql(xmlConfig.getString("preLoadSql", null));
       wrkld.setUsername(xmlConfig.getString("username"));
       wrkld.setPassword(xmlConfig.getString("password"));
       wrkld.setRandomSeed(xmlConfig.getInt("randomSeed", -1));
@@ -343,7 +345,8 @@ public class DBWorkload {
         // We now have the option to run all queries exactly once in
         // a serial (rather than random) order.
         boolean serial = Boolean.parseBoolean(work.getString("serial", Boolean.FALSE.toString()));
-        boolean noColdQueries = Boolean.parseBoolean(work.getString("noColdQueries", Boolean.FALSE.toString()));
+        boolean noColdQueries =
+            Boolean.parseBoolean(work.getString("noColdQueries", Boolean.FALSE.toString()));
 
         int activeTerminals;
         activeTerminals = work.getInt("active_terminals[not(@bench)]", terminals);
