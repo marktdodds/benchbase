@@ -399,6 +399,7 @@ public class DBWorkload {
         }
 
         long roundedWeight = Math.round(totalWeight);
+        int phaseRandomSeed = work.getInt("randomSeed", -1);
 
         if (roundedWeight != 100) {
           LOG.warn(
@@ -419,7 +420,8 @@ public class DBWorkload {
             timed,
             activeTerminals,
             arrival,
-            noColdQueries);
+            noColdQueries,
+            phaseRandomSeed);
       }
 
       // CHECKING INPUT PHASES

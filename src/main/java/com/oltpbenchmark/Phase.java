@@ -28,7 +28,7 @@ public class Phase {
     POISSON,
   }
 
-  private final Random gen = new Random();
+  private final Random gen;
   private final String benchmarkName;
   private final int id;
   private final int time;
@@ -58,7 +58,9 @@ public class Phase {
     boolean serial,
     boolean timed,
     int activeTerminals,
-    Arrival a, boolean noColdQueries) {
+    Arrival a,
+    boolean noColdQueries,
+    int randomSeed) {
     this.benchmarkName = benchmarkName;
     this.id = id;
     this.time = t;
@@ -74,6 +76,7 @@ public class Phase {
     this.nextSerial = 1;
     this.activeTerminals = activeTerminals;
     this.arrival = a;
+    this.gen = randomSeed >= 0 ? new Random(randomSeed) : new Random();
   }
 
   public boolean isRateLimited() {

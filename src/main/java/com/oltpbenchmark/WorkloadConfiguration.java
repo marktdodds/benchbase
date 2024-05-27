@@ -182,7 +182,8 @@ public class WorkloadConfiguration {
       boolean timed,
       int active_terminals,
       Phase.Arrival arrival,
-      boolean noColdQueries) {
+      boolean noColdQueries,
+      int phaseRandomSeed) {
     phases.add(
         new Phase(
             benchmarkName,
@@ -197,7 +198,8 @@ public class WorkloadConfiguration {
             timed,
             active_terminals,
             arrival,
-            noColdQueries));
+            noColdQueries,
+            phaseRandomSeed));
   }
 
   /**
