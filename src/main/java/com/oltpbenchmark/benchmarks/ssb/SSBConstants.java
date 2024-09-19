@@ -18,5 +18,10 @@
 package com.oltpbenchmark.benchmarks.ssb;
 
 public class SSBConstants {
-  public static final String[] S_REGION = {"AFRICA", "AMERICA", "ASIA", "EUROPE", "MIDDLE EAST"};
+  public static final String TABLENAME_DATE = "DATE";
+  public static final String TABLENAME_SUPPLIER = "SUPPLIER";
+  public static final String TABLENAME_CUSTOMER = "CUSTOMER";
+  public static final String TABLENAME_PART = "PART";
+  public static final String TABLENAME_LINEORDER = "LINEORDER";
+
 }
