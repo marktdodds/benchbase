@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<parameters>
+
+    <!-- Connection details -->
+    <type>IGNITE</type>
+    <driver>org.apache.ignite.IgniteJdbcThinDriver</driver>
+    <loaderUrl>jdbc:ignite:thin://localhost:10800?queryEngine=h2</loaderUrl>
+    <url>jdbc:ignite:thin://localhost:10800</url>
+    <username>ignite</username>
+    <password>ignite</password>
+    <isolation>TRANSACTION_SERIALIZABLE</isolation>
+    <batchsize>1024</batchsize>
+    <randomSeed>3111696</randomSeed>
+    <preLoadSql>SET STREAMING ON</preLoadSql>
+    <queryTimeout>600</queryTimeout>
+
+    <!-- Control scale factor to generate different amount of data -->
+    <scalefactor>0.01</scalefactor>
+
+    <!-- The workload -->
+    <terminals>10</terminals>
+    <works>
+<!--        <work>-->
+<!--            <serial>true</serial>-->
+<!--            <rate>unlimited</rate>-->
+<!--            <weights>0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0</weights>-->
+<!--        </work>-->
+<!--        <work>-->
+<!--            <serial>true</serial>-->
+<!--            <rate>unlimited</rate>-->
+<!--            <noColdQueries>true</noColdQueries>-->
+<!--            <weights>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0</weights>-->
+<!--        </work>-->
+        <work>
+            <serial>true</serial>
+            <rate>unlimited</rate>
+            <noColdQueries>true</noColdQueries>
+            <weights>1,1,1,1,1,1,1,1,1,1,1,1,1</weights>
+        </work>
+    </works>
+
+    <transactiontypes>
+        <transactiontype>
+            <name>Q1_1</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q1_2</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q1_3</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q2_1</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q2_2</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q2_3</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q3_1</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q3_2</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q3_3</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q3_4</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q4_1</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q4_2</name>
+        </transactiontype>
+        <transactiontype>
+            <name>Q4_3</name>
+        </transactiontype>
+    </transactiontypes>
+</parameters>

@@ -48,7 +48,8 @@ public enum DatabaseType {
   SQLSERVER(true, true, true),
   TIMESTEN(true, false),
   PHOENIX(true, true),
-  IGNITE(true, true);
+  IGNITE(true, true),
+  SSB(true, true);
 
   DatabaseType(
       boolean escapeNames, boolean includeColNames, boolean loadNeedsUpdateColumnSequence) {
