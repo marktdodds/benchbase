@@ -28,7 +28,6 @@ CREATE TABLE DATE
     D_WEEKDAYFL SMALLINT NOT NULL,
     PRIMARY KEY (D_DATEKEY)
 ) WITH "template=TPCH";
--- CREATE INDEX n_rk ON nation (n_regionkey ASC);
 
 ------------------
 -- PART Table
@@ -63,7 +62,6 @@ CREATE TABLE SUPPLIER
     S_PHONE   CHAR(15)    NOT NULL,
     PRIMARY KEY (S_SUPPKEY)
 ) WITH "template=TPCH";
--- CREATE INDEX s_nk ON supplier (s_nationkey ASC);
 
 ------------------
 -- CUSTOMER Table
@@ -80,7 +78,6 @@ CREATE TABLE CUSTOMER
     C_MKTSEGMENT CHAR(10)    NOT NULL,
     PRIMARY KEY (C_CUSTKEY)
 ) WITH "template=TPCH";
--- CREATE INDEX c_nk ON customer (c_nationkey ASC);
 
 ------------------
 -- LINEORDER Table
@@ -104,11 +101,10 @@ CREATE TABLE LINEORDER
     LO_TAX           INTEGER  NOT NULL,
     LO_COMMITDATE    INTEGER NOT NULL, -- DATE FK
     LO_SHIPMODE      CHAR(10) NOT NULL,
-    PRIMARY KEY (lo_orderkey, lo_linenumber)
+    PRIMARY KEY (LO_ORDERKEY, LO_LINENUMBER)
 ) WITH "template=TPCH";
 
--- CREATE INDEX l_ok ON lineitem (LO_ORDERKEY ASC);
--- CREATE INDEX l_pk ON lineitem (LO_PARTKEY ASC);
--- CREATE INDEX l_sk ON lineitem (LO_SUPPKEY ASC);
--- CREATE INDEX l_cd ON lineitem (LO_COMMITDATE ASC);
--- CREATE INDEX l_pk_sk ON lineitem (LO_PARTKEY ASC, LO_SUPPKEY ASC);
+CREATE INDEX l_od ON LINEORDER (LO_ORDERDATE ASC);
+CREATE INDEX l_pk ON LINEORDER (LO_PARTKEY ASC);
+CREATE INDEX l_sk ON LINEORDER (LO_SUPPKEY ASC);
+CREATE INDEX l_ck ON LINEORDER (LO_CUSTKEY ASC);
